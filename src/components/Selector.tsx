@@ -1,24 +1,15 @@
-import { useState } from "react";
-import countriesJson from "../countries.json";
+import { ReactChild, ReactFragment, ReactPortal, Key } from "react";
 
-const Selector = () => {
-    const [country, setCountry] = useState<string>("");
-
-    const getCountryData = () => {
-        fetch(`https://api.covid19api.com/country/${country}`)
-        .then(res => res.json())
-        .then(data => console.log(data))
-    }
-
+const Selector = (props:any) => {
     return (
         <div>
-           <select onChange={(e: any) => setCountry(e.target.value)}>
+           <select onChange={(e: any) => props.setCountry(e.target.value)}>
                <option>Select A Country</option>
-               {countriesJson.map((country, index) =>
+               {props.countriesJson.map((country: { Slug: string | number | readonly string[] | undefined; Country: boolean | ReactChild | ReactFragment | ReactPortal | null | undefined; }, index: Key | null | undefined) =>
                    <option key={index} value={country.Slug}>{country.Country}</option>
                 )}
            </select>
-           <button onClick={getCountryData}>Get Data</button>
+           <button onClick={props.getCountryData}>Get Data</button>
         </div>
     )
 }
