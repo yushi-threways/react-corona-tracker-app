@@ -9,7 +9,7 @@ function App() {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [country, setCountry] = useState<string>("");
+  const [country, setCountry] = useState<string>("japan");
   const [countryData, setCountryData] = useState({
     date: "",
     newConfirmed: 0,
@@ -18,22 +18,25 @@ function App() {
     totalRecovered:  0,
   });
 
-  const getCountryData = () => {
-    setLoading(true);
-    fetch(`https://api.covid19api.com/country/${country}`)
-    .then(res => res.json())
-    .then(data => {
-      setCountryData({
-        date: data[data.length -1].Date,             
-        newConfirmed: data[data.length -1].Confirmed - data[data.length -2].Confirmed,      
-        totalConfirmed: data[data.length -1].Confirmed,    
-        newRecovered:  data[data.length -1].Recovered- data[data.length -2].Recovered,    
-        totalRecovered: data[data.length -1].Recovered,    
-      });
-      setLoading(false);
-    })
-    .catch(err => alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。"));
-    }
+  useEffect(() => {
+    const getCountryData = () => {
+      setLoading(true);
+      fetch(`https://api.covid19api.com/country/${country}`)
+      .then(res => res.json())
+      .then(data => {
+        setCountryData({
+          date: data[data.length -1].Date,             
+          newConfirmed: data[data.length -1].Confirmed - data[data.length -2].Confirmed,      
+          totalConfirmed: data[data.length -1].Confirmed,    
+          newRecovered:  data[data.length -1].Recovered- data[data.length -2].Recovered,    
+          totalRecovered: data[data.length -1].Recovered,    
+        });
+        setLoading(false);
+      })
+      .catch(err => alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。"));
+      }
+      getCountryData();
+  }, [country])
 
   const [allCountriesData, setAllCountriesData] = useState<any[]>([]);
 
@@ -56,8 +59,7 @@ function App() {
           <div>
             <TopPage 
               countriesJson={countriesJson} 
-              setCountry={setCountry} 
-              getCountryData={getCountryData}
+              setCountry={setCountry}
               countryData={countryData}
               loading={loading}
             />
