@@ -1,7 +1,9 @@
-import './App.css';
 import countriesJson from "./countries.json";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import TopPage from './pages/TopPage';
+import WorldPage from "./pages/WorldPage";
+import './App.css';
 
 function App() {
 
@@ -28,15 +30,35 @@ function App() {
     })
     }
 
+  const [allCountriesData, setAllCountriesData] = useState<any[]>([]);
+
+  useEffect(() => {
+      fetch("https://api.covid19api.com/summary")
+      .then(res => res.json())
+      .then(data => setAllCountriesData(data.Countries))
+  }, []);
+
   return (
-    <div>
-      <TopPage 
-        countriesJson={countriesJson} 
-        setCountry={setCountry} 
-        getCountryData={getCountryData}
-        countryData={countryData}
-      />
-    </div>
+    <BrowserRouter>
+      <Switch>
+      {/* https://reactrouter.com/web/guides/quick-start */}
+        <Route exact path="/">
+          <div>
+            <TopPage 
+              countriesJson={countriesJson} 
+              setCountry={setCountry} 
+              getCountryData={getCountryData}
+              countryData={countryData}
+            />
+        </div>
+        </Route>
+        <Route exact path="/world">
+          <WorldPage
+            allCountriesData={allCountriesData}
+          />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
