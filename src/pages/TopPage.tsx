@@ -8,7 +8,7 @@ const TopPage = (props:any) => {
         <div>
             <Title />
             <Selector countriesJson={props.countriesJson} setCountry={props.setCountry} getCountryData={props.getCountryData} />
-            <Results />
+            <Results countryData={props.countryData} />
         </div>
     )
 }
