@@ -1,13 +1,14 @@
 import Loading from "./Loading";
+import { CardType } from "../types";
 
-const Card = ({ allCountriesData, loading }:any) => {
+const Card = ({ allCountriesData, loading }:CardType) => {
     return (
         <div className="card-container">
             {loading ?
                 <Loading />
                 :
                 <>
-                {allCountriesData.map((singleData:any, index:number) =>
+                {allCountriesData.map((singleData, index) =>
                     <div key={index} className="card">
                         <div>
                             <h2>{singleData.Country}</h2>

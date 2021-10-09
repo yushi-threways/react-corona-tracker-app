@@ -1,6 +1,7 @@
 import Loading from "./Loading"; 
+import { ResultsType } from "../types";
 
-const Results = ({ countryData, loading }:any) => {
+const Results = ({ countryData, loading }:ResultsType) => {
     const {
          date, newConfirmed, totalConfirmed, newRecovered, totalRecovered 
         } = countryData;

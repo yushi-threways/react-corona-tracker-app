@@ -1,6 +1,7 @@
 import { ReactChild, ReactFragment, ReactPortal, Key } from "react";
+import { SelectorType } from "../types";
 
-const Selector = ({ setCountry, countriesJson }:any) => {
+const Selector = ({ setCountry, countriesJson }:SelectorType) => {
     return (
         <div className="selector-container">
            <select onChange={(e: any) => setCountry(e.target.value)}>
