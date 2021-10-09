@@ -7,6 +7,8 @@ import './App.css';
 
 function App() {
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [country, setCountry] = useState<string>("");
   const [countryData, setCountryData] = useState({
     date: "",
@@ -17,6 +19,7 @@ function App() {
   });
 
   const getCountryData = () => {
+    setLoading(true);
     fetch(`https://api.covid19api.com/country/${country}`)
     .then(res => res.json())
     .then(data => {
@@ -26,7 +29,8 @@ function App() {
         totalConfirmed: data[data.length -1].Confirmed,    
         newRecovered:  data[data.length -1].Recovered- data[data.length -2].Recovered,    
         totalRecovered: data[data.length -1].Recovered,    
-      })
+      });
+      setLoading(false);
     })
     .catch(err => alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。"));
     }
@@ -34,9 +38,13 @@ function App() {
   const [allCountriesData, setAllCountriesData] = useState<any[]>([]);
 
   useEffect(() => {
+      setLoading(true);
       fetch("https://api.covid19api.com/summary")
       .then(res => res.json())
-      .then(data => setAllCountriesData(data.Countries))
+      .then(data => {
+        setAllCountriesData(data.Countries)
+        setLoading(false)
+      })
       .catch(err => alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。"));
   }, []);
 
@@ -51,12 +59,14 @@ function App() {
               setCountry={setCountry} 
               getCountryData={getCountryData}
               countryData={countryData}
+              loading={loading}
             />
         </div>
         </Route>
         <Route exact path="/world">
           <WorldPage
             allCountriesData={allCountriesData}
+            loading={loading}
           />
         </Route>
       </Switch>
